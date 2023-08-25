@@ -1,113 +1,152 @@
-import Image from 'next/image'
+'use client'
+import React from 'react';
+import Cover from "../../assets/cover.jpg"
+import Image from "next/image";
+import Logo from "../../assets/logo.jpeg"
+import subCover from "../../assets/sub_cover.jpg"
+import TimImage from "../../assets/tim.jpeg"
+import subCoverOne from "../../assets/sub_cover_one.jpg"
+import JoeImage from "../../assets/joe.jpeg"
+import {useRouter} from "next/navigation";
+import {useQuery} from "@tanstack/react-query";
+import axios from "axios";
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+const Home = () => {
+    const fetchPosts = async () => {
+        const response = await axios.get('http://localhost:4000/posts');
+        return response.data;
+    };
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+    const {data: posts, error, isLoading} = useQuery({queryKey: ['posts'], queryFn: fetchPosts})
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+    const router = useRouter()
+    return (
+        <>
+            {posts.length >0 && (
+                <div className="flex flex-col">
+                    <div className="border-b bg-accent">
+                        <div className="text-sm px-4 py-2 bg-gray-50 sm:text-center">
+                            The source code for this blog is<a className="underline ml-1"
+                                                               href="https://github.com/vercel/next.js/tree/canary/examples/blog-starter">available
+                            on Github</a>
+                        </div>
+                    </div>
+                    <div
+                        className="flex flex-col mt-16 items-center justify-center sm:flex sm:flex-row sm:justify-between sm:items-center sm:p-4">
+                        <h1 className="text-6xl font-bold tracking-tighter leading-tight sm:text-8xl">Blog.</h1>
+                        <h5 className="text-center text-lg mt-4">A statically generated blog example using <a
+                            className="underline" href="https://nextjs.org/">Next.js</a> and Markdown.</h5>
+                    </div>
+                    <div className="mt-16 p-4 sm:mt-8">
+                        <div>
+                            <Image src={Cover} alt="cover" onClick={() => router.push('/posts')}
+                                   className="cursor-pointer"/>
+                        </div>
+                        <div className="sm:flex sm:flex-row sm:justify-between sm:items-center">
+                            <div className="sm:w-1/2">
+                                <h3 className="text-4xl leading-tight text-left mb-4 mt-6 sm:mt-16 sm:text-5xl">
+                                    <a className="hover:underline cursor-pointer" onClick={() => router.push(`/posts/${posts[0].id}`)}>
+                                        {posts[0].title}</a>
+                                </h3>
+                                <div className="text-lg">
+                                    March 16,2020
+                                </div>
+                            </div>
+                            <div className="sm:w-1/2">
+                                <div className="mt-6 sm:mt-16 sm:text-lg line-clamp-3">
+                                    {posts[0].content}
+                                </div>
+                                <div className="mt-6 flex">
+                                    <div>
+                                        <Image src={Logo} alt="logo" className="w-12 h-12 rounded-full"/>
+                                    </div>
+                                    {/*{users.length > 0 && (*/}
+                                    <div className="text-lg font-bold flex justify-center items-center pl-3">
+                                        {posts[0].author_name}
+                                    </div>
+                                    {/*)}*/}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 className="text-4xl font-bold sm:text-6xl p-4 mt-12">More Stories</h2>
+                    <div className="sm:flex sm:flex-row p-4">
+                        <div className="flex flex-col sm:w-1/2 sm:mr-28">
+                            <div>
+                                <Image src={subCover} alt="sub_cover" className="mt-8 cursor-pointer"/>
+                            </div>
+                            <div>
+                                <h3 className="text-3xl leading-snug text-left mb-4 mt-6">
+                                    <a className="hover:underline cursor-pointer" onClick={() => router.push(`/posts/${posts[1].id}`)}>
+                                        {posts[1].title}</a></h3>
+                            </div>
+                            <div className="text-lg">
+                                March 16,2020
+                            </div>
+                            <div className="mt-6 line-clamp-3">
+                                {posts[1].content}
+                            </div>
+                            <div className="mt-6 flex">
+                                <div>
+                                    <Image src={TimImage} alt="Author" className="w-12 h-12 rounded-full"/>
+                                </div>
+                                <div className="text-lg font-bold flex justify-center items-center pl-3">
+                                    {posts[1].author_name}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mt-8 sm:mt-0 flex flex-col mb-16 sm:w-1/2">
+                            <div>
+                                <Image src={subCoverOne} alt="sub_cover" className="mt-8 cursor-pointer"/>
+                            </div>
+                            <div>
+                                <h3 className="text-3xl leading-snug text-left mb-4 mt-6">
+                                    <a className="hover:underline cursor-pointer" onClick={() => router.push(`/posts/${posts[2].id}`)}>
+                                        {posts[2].title}</a></h3>
+                            </div>
+                            <div className="text-lg">
+                                March 16,2020
+                            </div>
+                            <div className="mt-6 line-clamp-3">
+                                {posts[2].content}
+                            </div>
+                            <div className="mt-6 flex">
+                                <div>
+                                    <Image src={JoeImage} alt="Author" className="w-12 h-12 rounded-full"/>
+                                </div>
+                                <div className="text-lg font-bold flex justify-center items-center pl-3">
+                                    {posts[2].author_name}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer
+                        className="border-t bg-accent p-4 flex flex-col sm:flex-row justify-center items-center sm:h-56 sm:mt-28">
+                        <div
+                            className="text-3xl font-bold text-center pt-24 sm:w-1/2 sm:flex sm:text-left sm:items-center sm:-mt-24 sm:text-4xl">
+                            Statically Generated with Next.js.
+                        </div>
+                        <div className="sm:flex sm:flex-row sm:w-1/2 sm:justify-center sm:items-center sm:-mt-4">
+                            <a className="bg-black hover:bg-white px-8 mx-12 mt-6 text-white hover:text-black
+                font-bold py-3 flex justify-center items-center border border-black"
+                               href="https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts">
+                                Read Documentation
+                            </a>
+                            <a className="flex justify-center items-center mt-6 font-bold hover:underline"
+                               href="https://github.com/vercel/next.js/tree/canary/examples/blog-starter">
+                                View on Github
+                            </a>
+                        </div>
+                    </footer>
+                </div>
+            )}
+        </>
+    );
+};
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default Home;
