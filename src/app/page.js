@@ -32,7 +32,7 @@ const Home = () => {
                     <div className="border-b bg-accent">
                         <div className="text-sm px-4 py-2 bg-gray-50 sm:text-center">
                             The source code for this blog is<a className="underline ml-1"
-                                                               href="https://github.com/vercel/next.js/tree/canary/examples/blog-starter">available
+                                                               href="https://github.com/minthant-gic/vercelBlog">available
                             on Github</a>
                         </div>
                     </div>
@@ -44,7 +44,7 @@ const Home = () => {
                     </div>
                     <div className="mt-16 p-4 sm:mt-8">
                         <div>
-                            <Image src={Cover} alt="cover" onClick={() => router.push('/posts')}
+                            <Image src={Cover} alt="cover" onClick={() => router.push(`/posts/${posts[0].id}`)}
                                    className="cursor-pointer"/>
                         </div>
                         <div className="sm:flex sm:flex-row sm:justify-between sm:items-center">
@@ -78,7 +78,7 @@ const Home = () => {
                     <div className="sm:flex sm:flex-row p-4">
                         <div className="flex flex-col sm:w-1/2 sm:mr-28">
                             <div>
-                                <Image src={subCover} alt="sub_cover" className="mt-8 cursor-pointer"/>
+                                <Image src={subCover} alt="sub_cover" className="mt-8 cursor-pointer" onClick={() => router.push(`/posts/${posts[1].id}`)}/>
                             </div>
                             <div>
                                 <h3 className="text-3xl leading-snug text-left mb-4 mt-6">
@@ -102,7 +102,7 @@ const Home = () => {
                         </div>
                         <div className="mt-8 sm:mt-0 flex flex-col mb-16 sm:w-1/2">
                             <div>
-                                <Image src={subCoverOne} alt="sub_cover" className="mt-8 cursor-pointer"/>
+                                <Image src={subCoverOne} alt="sub_cover" className="mt-8 cursor-pointer" onClick={() => router.push(`/posts/${posts[2].id}`)}/>
                             </div>
                             <div>
                                 <h3 className="text-3xl leading-snug text-left mb-4 mt-6">
@@ -138,7 +138,7 @@ const Home = () => {
                                 Read Documentation
                             </a>
                             <a className="flex justify-center items-center mt-6 font-bold hover:underline"
-                               href="https://github.com/vercel/next.js/tree/canary/examples/blog-starter">
+                               href="https://github.com/minthant-gic/vercelBlog">
                                 View on Github
                             </a>
                         </div>
