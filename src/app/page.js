@@ -1,12 +1,10 @@
 'use client'
 import React from 'react';
-import Cover from "../../assets/cover.jpg"
 import Image from "next/image";
 import Logo from "../../assets/logo.jpeg"
-import subCover from "../../assets/sub_cover.jpg"
 import TimImage from "../../assets/tim.jpeg"
-import subCoverOne from "../../assets/sub_cover_one.jpg"
 import JoeImage from "../../assets/joe.jpeg"
+import ArrowRight from "../../assets/arrow.svg"
 import {useRouter} from "next/navigation";
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
@@ -24,10 +22,11 @@ const Home = () => {
     if (error) {
         return <div>Error: {error.message}</div>;
     }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const router = useRouter()
     return (
         <>
-            {posts.length >0 && (
+            {posts.length > 0 && (
                 <div className="flex flex-col">
                     <div className="border-b bg-accent">
                         <div className="text-sm px-4 py-2 bg-gray-50 sm:text-center">
@@ -44,17 +43,18 @@ const Home = () => {
                     </div>
                     <div className="mt-16 p-4 sm:mt-8">
                         <div>
-                            <Image src={Cover} alt="cover" onClick={() => router.push(`/posts/${posts[0].id}`)}
-                                   className="cursor-pointer"/>
+                            <img src={posts[0].image} alt="" onClick={() => router.push(`/posts/${posts[0].id}`)}
+                                   className="cursor-pointer w-full"/>
                         </div>
                         <div className="sm:flex sm:flex-row sm:justify-between sm:items-center">
                             <div className="sm:w-1/2">
                                 <h3 className="text-4xl leading-tight text-left mb-4 mt-6 sm:mt-16 sm:text-5xl">
-                                    <a className="hover:underline cursor-pointer" onClick={() => router.push(`/posts/${posts[0].id}`)}>
+                                    <a className="hover:underline cursor-pointer"
+                                       onClick={() => router.push(`/posts/${posts[0].id}`)}>
                                         {posts[0].title}</a>
                                 </h3>
                                 <div className="text-lg">
-                                    March 16,2020
+                                    {posts[0].date}
                                 </div>
                             </div>
                             <div className="sm:w-1/2">
@@ -78,15 +78,17 @@ const Home = () => {
                     <div className="sm:flex sm:flex-row p-4">
                         <div className="flex flex-col sm:w-1/2 sm:mr-28">
                             <div>
-                                <Image src={subCover} alt="sub_cover" className="mt-8 cursor-pointer" onClick={() => router.push(`/posts/${posts[1].id}`)}/>
+                                <img src={posts[1].image} alt="" onClick={() => router.push(`/posts/${posts[1].id}`)}
+                                     className="cursor-pointer w-full"/>
                             </div>
                             <div>
                                 <h3 className="text-3xl leading-snug text-left mb-4 mt-6">
-                                    <a className="hover:underline cursor-pointer" onClick={() => router.push(`/posts/${posts[1].id}`)}>
+                                    <a className="hover:underline cursor-pointer"
+                                       onClick={() => router.push(`/posts/${posts[1].id}`)}>
                                         {posts[1].title}</a></h3>
                             </div>
                             <div className="text-lg">
-                                March 16,2020
+                                {posts[1].date}
                             </div>
                             <div className="mt-6 line-clamp-3">
                                 {posts[1].content}
@@ -102,15 +104,17 @@ const Home = () => {
                         </div>
                         <div className="mt-8 sm:mt-0 flex flex-col mb-16 sm:w-1/2">
                             <div>
-                                <Image src={subCoverOne} alt="sub_cover" className="mt-8 cursor-pointer" onClick={() => router.push(`/posts/${posts[2].id}`)}/>
+                                <img src={posts[2].image} alt="" onClick={() => router.push(`/posts/${posts[2].id}`)}
+                                     className="cursor-pointer w-full"/>
                             </div>
                             <div>
                                 <h3 className="text-3xl leading-snug text-left mb-4 mt-6">
-                                    <a className="hover:underline cursor-pointer" onClick={() => router.push(`/posts/${posts[2].id}`)}>
+                                    <a className="hover:underline cursor-pointer"
+                                       onClick={() => router.push(`/posts/${posts[2].id}`)}>
                                         {posts[2].title}</a></h3>
                             </div>
                             <div className="text-lg">
-                                March 16,2020
+                                {posts[2].date}
                             </div>
                             <div className="mt-6 line-clamp-3">
                                 {posts[2].content}
@@ -121,6 +125,12 @@ const Home = () => {
                                 </div>
                                 <div className="text-lg font-bold flex justify-center items-center pl-3">
                                     {posts[2].author_name}
+                                </div>
+                            </div>
+                            <div className="flex sm:items-center sm:justify-end sm:mr-12 justify-center items-center">
+                                <div className="mt-12 border border-gray-200 rounded-full w-12 h-12 ">
+                                    <Image src={ArrowRight} alt="RightArrow" className="w-12 h-12 cursor-pointer"
+                                           onClick={() => router.push(`/posts/`)}></Image>
                                 </div>
                             </div>
                         </div>
